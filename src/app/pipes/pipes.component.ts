@@ -3,10 +3,8 @@ import { Product } from '../products';
 
 
 
-@Pipe({
+@Pipe({  name: 'selectedProduct'})
 
-  name: 'selectedProduct'
-})
 export class PipesComponent implements PipeTransform {
 
   transform(allProducts: Product[], productId: number): any {

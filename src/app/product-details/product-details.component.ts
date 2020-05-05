@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Product } from '../products';
 import { ActivatedRoute } from '@angular/router';
 
@@ -13,24 +13,39 @@ import { ProductService } from '../services/product.service';
 })
 export class ProductDetailsComponent implements OnInit, OnDestroy {
 
+    // @Input() product: Product;
+    product: Product[];
+
     public id: number;
-    products: Product[];
+      products: Product[];
     private sub: any;
 
     prodIdSnapshot: number;
 
     constructor(private productService: ProductService, private route: ActivatedRoute) {
 
-        this.products = productService.getProducts();
+        this.productService.getProducts().subscribe(res => {
+            this.products = res;
+          });
     }
 
     ngOnInit() {
 
-        this.sub = this.route.params.subscribe(params => {
+       // this.getProduct();
 
-            this.id = +params['id'];
-        });
+        this.sub = this.route.params.subscribe(params => {            this.id = +params.id;        });
     }
+    getProduct(): void{
+      //  const id = +this.route.snapshot.paramMap.get('id');
+       // this.productService.getProduct(id)
+       // .subscribe(product => this.product = product);
+    }
+
+
+
+
+
+
 
     ngOnDestroy() {
 
