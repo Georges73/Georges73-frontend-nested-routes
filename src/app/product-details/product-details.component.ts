@@ -16,6 +16,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   products: Product[] = [];  // <== is the solution to undefined error
   private sub: any;
+  
 
   prodIdSnapshot: number;
 

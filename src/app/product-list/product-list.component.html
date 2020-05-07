@@ -1,10 +1,24 @@
 
 
-<div class="container mt-5">
+<!-- <div class="container mt-5">
     <h1>Product List</h1>
     <div class="list-group">
-        <a class="list-group-item list-group-item-action" *ngFor="let p of products" [routerLink]="['product-details', p.id]">{{p.name}}</a>
+        <a class="list-group-item list-group-item-action" *ngFor="let p of products$" [routerLink]="['product-details', p.id]">{{p.name}}</a>
     </div>
-</div>
+</div> -->
+
+<div id="search-component">
+    <h4><label for="search-box">product Search</label></h4>
+  
+    <input #searchBox id="search-box" (input)="search(searchBox.value)" />
+  
+    <ul class="search-result">
+      <li *ngFor="let p of products$ | async" >
+        <a [routerLink]="['product-details', p.id]">
+          {{p.name}}
+        </a>
+      </li>
+    </ul>
+  </div>
 
 <router-outlet></router-outlet>

@@ -6,7 +6,13 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class ProductService {
+
+
   private productUrl = 'api/productsarray';
+
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
 
   constructor(private http: HttpClient) {}
 
@@ -25,9 +31,29 @@ export class ProductService {
     );
   }
 
+// *********************************************************************************** */
+
+searchProducts(term: string): Observable<Product[]> {
+    if (!term.trim()) {
+      // if not search term, return empty hero array.
+      return of([]);
+    }
+    return this.http.get<Product[]>(`${this.productUrl}/?name=${term}`).pipe(
+      tap(x => x.length ?
+         this.log(`found product matching "${term}"`) :
+         this.log(`no heroes matching "${term}"`)),
+      catchError(this.handleError<Product[]>('searchHeroes', []))
+    );
+
+  }
+
+
+  // *********************************************************************************** */
+
   private log(message: string) {
     // this.messageService.add(`HeroService: ${message}`);
   }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       // TODO: send the error to remote logging infrastructure
