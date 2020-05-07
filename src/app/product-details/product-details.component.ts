@@ -8,47 +8,36 @@ import { ProductService } from '../services/product.service';
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
- // styleUrls: ['/product-details.component.css'],
-  providers: [ProductService]
+  // styleUrls: ['/product-details.component.css'],
+  providers: [ProductService],
 })
 export class ProductDetailsComponent implements OnInit, OnDestroy {
+  public id: number;
 
-    // @Input() product: Product;
-    product: Product[];
+  products: Product[] = [];  // <== is the solution to undefined error
+  private sub: any;
 
-    public id: number;
-      products: Product[];
-    private sub: any;
+  prodIdSnapshot: number;
 
-    prodIdSnapshot: number;
+  constructor(    private productService: ProductService, private route: ActivatedRoute )
+  {
+    this.productService.getProducts().subscribe((res) => {      this.products = res;    });
+  }
 
-    constructor(private productService: ProductService, private route: ActivatedRoute) {
+  ngOnInit() {
+    // this.getProduct();
 
-        this.productService.getProducts().subscribe(res => {
-            this.products = res;
-          });
-    }
+    this.sub = this.route.params.subscribe((params) => {
+      this.id = +params.id;
+    });
+  }
+  getProduct(): void {
+    //  const id = +this.route.snapshot.paramMap.get('id');
+    // this.productService.getProduct(id)
+    // .subscribe(product => this.product = product);
+  }
 
-    ngOnInit() {
-
-       // this.getProduct();
-
-        this.sub = this.route.params.subscribe(params => {            this.id = +params.id;        });
-    }
-    getProduct(): void{
-      //  const id = +this.route.snapshot.paramMap.get('id');
-       // this.productService.getProduct(id)
-       // .subscribe(product => this.product = product);
-    }
-
-
-
-
-
-
-
-    ngOnDestroy() {
-
-        this.sub.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
 }

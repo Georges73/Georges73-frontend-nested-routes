@@ -15,6 +15,8 @@ const appRoutes: Routes = [
      }
     ]
     },
+    { path: '',   redirectTo: '/product-list', pathMatch: 'full' },
+  // { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
